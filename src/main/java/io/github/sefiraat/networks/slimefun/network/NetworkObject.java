@@ -1,5 +1,7 @@
 package io.github.sefiraat.networks.slimefun.network;
 
+import com.xzavier0722.mc.plugin.slimefun4.storage.controller.SlimefunBlockData;
+import com.xzavier0722.mc.plugin.slimefun4.storage.util.StorageCacheUtils;
 import io.github.sefiraat.networks.NetworkStorage;
 import io.github.sefiraat.networks.network.NetworkRoot;
 import io.github.sefiraat.networks.network.NodeDefinition;
@@ -12,10 +14,9 @@ import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
 import io.github.thebusybiscuit.slimefun4.core.handlers.BlockBreakHandler;
 import io.github.thebusybiscuit.slimefun4.core.handlers.BlockPlaceHandler;
 import io.github.thebusybiscuit.slimefun4.core.handlers.ItemUseHandler;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import lombok.Getter;
-import me.mrCookieSlime.CSCoreLibPlugin.Configuration.Config;
 import me.mrCookieSlime.Slimefun.Objects.handlers.BlockTicker;
-import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import me.mrCookieSlime.Slimefun.api.inventory.BlockMenu;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
@@ -63,7 +64,7 @@ public abstract class NetworkObject extends SlimefunItem implements AdminDebugga
                     }
 
                     @Override
-                    public void tick(Block b, SlimefunItem item, Config data) {
+                    public void tick(Block b, SlimefunItem item, SlimefunBlockData data) {
                         addToRegistry(b);
                     }
                 },
@@ -97,7 +98,7 @@ public abstract class NetworkObject extends SlimefunItem implements AdminDebugga
 
     protected void onBreak(@Nonnull BlockBreakEvent event) {
         final Location location = event.getBlock().getLocation();
-        final BlockMenu blockMenu = BlockStorage.getInventory(event.getBlock());
+        final BlockMenu blockMenu = StorageCacheUtils.getMenu(location);
 
         if (blockMenu != null) {
             for (int i : this.slotsToDrop) {
@@ -110,7 +111,7 @@ public abstract class NetworkObject extends SlimefunItem implements AdminDebugga
 //            NetworkController.wipeNetwork(location);
 //        }
 
-        BlockStorage.clearBlockInfo(location);
+        Slimefun.getDatabaseManager().getBlockDataController().removeBlock(location);
     }
 
     protected void prePlace(@Nonnull PlayerRightClickEvent event) {

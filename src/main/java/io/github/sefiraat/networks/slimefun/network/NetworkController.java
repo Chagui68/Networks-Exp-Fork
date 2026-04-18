@@ -1,5 +1,6 @@
 package io.github.sefiraat.networks.slimefun.network;
 
+import com.xzavier0722.mc.plugin.slimefun4.storage.controller.SlimefunBlockData;
 import io.github.sefiraat.networks.NetworkStorage;
 import io.github.sefiraat.networks.network.NetworkNode;
 import io.github.sefiraat.networks.network.NetworkRoot;
@@ -13,7 +14,6 @@ import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
 import io.github.thebusybiscuit.slimefun4.api.items.settings.IntRangeSetting;
 import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
 import lombok.Getter;
-import me.mrCookieSlime.CSCoreLibPlugin.Configuration.Config;
 import me.mrCookieSlime.Slimefun.Objects.handlers.BlockTicker;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import org.bukkit.Location;
@@ -47,7 +47,7 @@ public class NetworkController extends NetworkObject {
                     }
 
                     @Override
-                    public void tick(Block block, SlimefunItem item, Config data) {
+                    public void tick(Block block, SlimefunItem item, SlimefunBlockData data) {
                         if (!firstTickMap.containsKey(block.getLocation())) {
                             onFirstTick(block, data);
                             firstTickMap.put(block.getLocation(), true);
@@ -131,8 +131,8 @@ public class NetworkController extends NetworkObject {
         }
     }
 
-    private void onFirstTick(@Nonnull Block block, @Nonnull Config data) {
-        final String crayon = data.getString(CRAYON);
+    private void onFirstTick(@Nonnull Block block, @Nonnull SlimefunBlockData data) {
+        final String crayon = data.getData(CRAYON);
         if (Boolean.parseBoolean(crayon)) {
             CRAYONS.add(block.getLocation());
         }
