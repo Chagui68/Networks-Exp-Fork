@@ -2,10 +2,12 @@ package io.github.sefiraat.networks.managers;
 
 import com.google.common.base.Preconditions;
 import io.github.sefiraat.networks.Networks;
+import lombok.Getter;
 import org.bukkit.Bukkit;
 
 public class SupportedPluginManager {
 
+    @Getter
     private static SupportedPluginManager instance;
 
     private final boolean infinityExpansion;
@@ -28,10 +30,6 @@ public class SupportedPluginManager {
                 .getServer()
                 .getScheduler()
                 .runTaskLater(Networks.getInstance(), this::firstTickRegistrations, 1);
-    }
-
-    public static SupportedPluginManager getInstance() {
-        return instance;
     }
 
     private void firstTickRegistrations() {

@@ -2,7 +2,6 @@ package io.github.sefiraat.networks.utils;
 
 import com.balugaq.netex.utils.Converter;
 import io.github.sefiraat.networks.network.stackcaches.ItemStackCache;
-import io.github.thebusybiscuit.slimefun4.api.MinecraftVersion;
 import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import io.github.thebusybiscuit.slimefun4.libraries.dough.data.persistent.PersistentDataAPI;
 import lombok.experimental.UtilityClass;
@@ -248,14 +247,8 @@ public class StackUtils {
 
         // Potion
         if (metaOne instanceof PotionMeta instanceOne && metaTwo instanceof PotionMeta instanceTwo) {
-            if (Slimefun.getMinecraftVersion().isAtLeast(MinecraftVersion.MINECRAFT_1_20_5)) {
-                if (instanceOne.getBasePotionType() != instanceTwo.getBasePotionType()) {
-                    return true;
-                }
-            } else {
-                if (!Objects.equals(instanceOne.getBasePotionData(), instanceTwo.getBasePotionData())) {
-                    return true;
-                }
+            if (instanceOne.getBasePotionType() != instanceTwo.getBasePotionType()) {
+                return true;
             }
             if (instanceOne.hasCustomEffects() != instanceTwo.hasCustomEffects()) {
                 return true;
