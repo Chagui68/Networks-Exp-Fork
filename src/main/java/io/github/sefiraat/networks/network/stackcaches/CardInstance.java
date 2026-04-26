@@ -1,6 +1,9 @@
 package io.github.sefiraat.networks.network.stackcaches;
 
 import io.github.sefiraat.networks.utils.Theme;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
+import lombok.Getter;
+import lombok.Setter;
 import org.bukkit.ChatColor;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -9,27 +12,18 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
 
+@Getter
 public class CardInstance extends ItemStackCache {
 
     private final int limit;
+
+    @Setter
     private int amount;
 
     public CardInstance(@Nullable ItemStack itemStack, int amount, int limit) {
         super(itemStack);
         this.amount = amount;
         this.limit = limit;
-    }
-
-    public int getAmount() {
-        return this.amount;
-    }
-
-    public void setAmount(int amount) {
-        this.amount = amount;
-    }
-
-    public int getLimit() {
-        return this.limit;
     }
 
     @Nullable

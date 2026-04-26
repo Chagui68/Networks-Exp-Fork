@@ -1,5 +1,6 @@
 package io.github.sefiraat.networks.slimefun.network;
 
+import com.balugaq.netex.utils.Converter;
 import com.xzavier0722.mc.plugin.slimefun4.storage.controller.SlimefunBlockData;
 import com.xzavier0722.mc.plugin.slimefun4.storage.util.StorageCacheUtils;
 import io.github.sefiraat.networks.NetworkStorage;
@@ -108,13 +109,15 @@ public class NetworkAutoCrafter extends NetworkObject {
 
         final ItemStack blueprint = blockMenu.getItemInSlot(BLUEPRINT_SLOT);
 
-        if (blueprint == null || blueprint.getType() == Material.AIR) {
+        if (blueprint == null || blueprint.getType().isAir()) {
             return;
         }
 
         final long networkCharge = root.getRootPower();
 
         if (networkCharge > this.chargePerCraft) {
+            final ItemStack nBlueprint = Converter.getItem(blueprint).clone();
+
             final SlimefunItem item = SlimefunItem.getByItem(blueprint);
 
             if (!(item instanceof CraftingBlueprint)) {
@@ -124,7 +127,7 @@ public class NetworkAutoCrafter extends NetworkObject {
             BlueprintInstance instance = INSTANCE_MAP.get(blockMenu.getLocation());
 
             if (instance == null) {
-                final ItemMeta blueprintMeta = blueprint.getItemMeta();
+                final ItemMeta blueprintMeta = nBlueprint.getItemMeta();
                 final Optional<BlueprintInstance> optional = DataTypeMethods.getOptionalCustom(blueprintMeta, Keys.BLUEPRINT_INSTANCE, PersistentCraftingBlueprintType.TYPE);
 
                 if (optional.isEmpty()) {

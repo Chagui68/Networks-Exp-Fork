@@ -5,12 +5,12 @@ import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.Range;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
@@ -18,7 +18,6 @@ import java.util.function.Supplier;
 /**
  * @author balugaq
  */
-@ApiStatus.Experimental
 public class Converter {
     public static final ItemStack AIR = new ItemStack(Material.AIR);
 
@@ -40,6 +39,10 @@ public class Converter {
         return getItem(asBukkit(slimefunItemStack), amount);
     }
 
+    public static @NotNull ItemStack[] getItem(@NotNull SlimefunItemStack... slimefunItemStacks) {
+        return Arrays.stream(slimefunItemStacks).map(Converter::getItem).toArray(ItemStack[]::new);
+    }
+
     /**
      * Converts a Bukkit ItemStack to another Bukkit ItemStack.
      *
@@ -48,6 +51,16 @@ public class Converter {
      */
     public static @NotNull ItemStack getItem(@NotNull ItemStack itemStack) {
         return new CustomItemStack(itemStack).asBukkit();
+    }
+
+    /**
+     * Converts Bukkit ItemStacks to another Bukkit ItemStacks.
+     *
+     * @param itemStacks the Bukkit ItemStack to convert
+     * @return the converted Bukkit ItemStack
+     */
+    public static @NotNull ItemStack[] getItem(@NotNull ItemStack... itemStacks) {
+        return Arrays.stream(itemStacks).map(i -> new CustomItemStack(i).asBukkit()).toArray(ItemStack[]::new);
     }
 
     /**
@@ -220,7 +233,7 @@ public class Converter {
                 if (itemStack == null) throw new Throwable();
             } catch (Throwable ignored) {
                 try {
-                    itemStack = (ItemStack) ReflectionUtil.invokeMethod(item, "getItem");
+                    itemStack = ReflectionUtil.getValue(item, "craftDelegate", ItemStack.class);
                     if (itemStack == null) throw new Throwable();
                 } catch (Throwable ignored2) {
                     try {

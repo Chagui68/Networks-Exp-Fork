@@ -1,6 +1,8 @@
 package io.github.sefiraat.networks.network.stackcaches;
 
+import com.balugaq.netex.utils.Converter;
 import io.github.sefiraat.networks.utils.Theme;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.inventory.ItemStack;
@@ -28,6 +30,14 @@ public class QuantumCache extends ItemStackCache {
     public QuantumCache(@Nullable ItemStack storedItem, int amount, int limit, boolean voidExcess) {
         super(storedItem);
         this.storedItemMeta = storedItem == null ? null : storedItem.getItemMeta();
+        this.amount = amount;
+        this.limit = limit;
+        this.voidExcess = voidExcess;
+    }
+
+    public QuantumCache(@Nullable SlimefunItemStack storedItem, int amount, int limit, boolean voidExcess) {
+        super(storedItem);
+        this.storedItemMeta = storedItem == null ? null : Converter.getItem(storedItem).getItemMeta();
         this.amount = amount;
         this.limit = limit;
         this.voidExcess = voidExcess;

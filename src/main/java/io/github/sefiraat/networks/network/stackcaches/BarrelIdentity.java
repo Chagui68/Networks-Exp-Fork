@@ -2,6 +2,7 @@ package io.github.sefiraat.networks.network.stackcaches;
 
 import io.github.sefiraat.networks.network.barrel.BarrelCore;
 import io.github.sefiraat.networks.network.barrel.BarrelType;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
 import org.bukkit.Location;
 import org.bukkit.inventory.ItemStack;
 
@@ -15,6 +16,14 @@ public abstract class BarrelIdentity extends ItemStackCache implements BarrelCor
 
     @ParametersAreNonnullByDefault
     protected BarrelIdentity(Location location, ItemStack itemStack, int amount, BarrelType type) {
+        super(itemStack);
+        this.location = location;
+        this.amount = amount;
+        this.type = type;
+    }
+
+    @ParametersAreNonnullByDefault
+    protected BarrelIdentity(Location location, SlimefunItemStack itemStack, int amount, BarrelType type) {
         super(itemStack);
         this.location = location;
         this.amount = amount;

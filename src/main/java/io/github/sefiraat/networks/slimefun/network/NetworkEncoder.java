@@ -1,5 +1,6 @@
 package io.github.sefiraat.networks.slimefun.network;
 
+import com.balugaq.netex.utils.Converter;
 import io.github.sefiraat.networks.NetworkStorage;
 import io.github.sefiraat.networks.network.NetworkRoot;
 import io.github.sefiraat.networks.network.NodeDefinition;
@@ -8,7 +9,6 @@ import io.github.sefiraat.networks.network.SupportedRecipes;
 import io.github.sefiraat.networks.slimefun.NetworkSlimefunItems;
 import io.github.sefiraat.networks.slimefun.tools.CraftingBlueprint;
 import io.github.sefiraat.networks.utils.ItemCreator;
-import io.github.sefiraat.networks.utils.StackUtils;
 import io.github.sefiraat.networks.utils.Theme;
 import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
@@ -108,7 +108,7 @@ public class NetworkEncoder extends NetworkObject {
             return;
         }
 
-        final ItemStack outputStack = blockMenu.getItemInSlot(OUTPUT_SLOT);
+        ItemStack outputStack = blockMenu.getItemInSlot(OUTPUT_SLOT);
 
         if (outputStack != null && outputStack.getType() != Material.AIR) {
             player.sendMessage(Theme.WARNING + "The output slot must be empty.");
@@ -126,10 +126,9 @@ public class NetworkEncoder extends NetworkObject {
         final ItemStack[] inputs = new ItemStack[RECIPE_SLOTS.length];
         int i = 0;
         for (int recipeSlot : RECIPE_SLOTS) {
-            ItemStack stackInSlot = blockMenu.getItemInSlot(recipeSlot);
+            final ItemStack stackInSlot = blockMenu.getItemInSlot(recipeSlot);
             if (stackInSlot != null) {
-                inputs[i] = new ItemStack(stackInSlot);
-                inputs[i].setAmount(1);
+                inputs[i] = Converter.getItem(stackInSlot).asOne();
             }
             i++;
         }
@@ -139,7 +138,7 @@ public class NetworkEncoder extends NetworkObject {
         // Go through each slimefun recipe, test and set the ItemStack if found
         for (Map.Entry<ItemStack[], ItemStack> entry : SupportedRecipes.getRecipes().entrySet()) {
             if (SupportedRecipes.testRecipe(inputs, entry.getKey())) {
-                crafted = new ItemStack(entry.getValue().clone());
+                crafted = Converter.getItem(entry.getValue()).clone();
                 break;
             }
         }
@@ -155,7 +154,8 @@ public class NetworkEncoder extends NetworkObject {
             return;
         }
 
-        final ItemStack blueprintClone = StackUtils.getAsQuantity(blueprint, 1);
+        final ItemStack blueprintClone = blueprint.clone();
+        blueprintClone.setAmount(1);
 
         blueprint.setAmount(blueprint.getAmount() - 1);
         CraftingBlueprint.setBlueprint(blueprintClone, inputs, crafted);

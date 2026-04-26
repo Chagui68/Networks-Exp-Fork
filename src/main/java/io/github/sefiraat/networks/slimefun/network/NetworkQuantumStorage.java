@@ -1,5 +1,6 @@
 package io.github.sefiraat.networks.slimefun.network;
 
+import com.xzavier0722.mc.plugin.slimefun4.storage.controller.SlimefunBlockData;
 import io.github.sefiraat.networks.network.stackcaches.ItemStackCache;
 import io.github.sefiraat.networks.network.stackcaches.QuantumCache;
 import io.github.sefiraat.networks.utils.*;
@@ -19,7 +20,6 @@ import io.github.thebusybiscuit.slimefun4.utils.ChatUtils;
 import io.github.thebusybiscuit.slimefun4.utils.ChestMenuUtils;
 import lombok.Getter;
 import lombok.Setter;
-import me.mrCookieSlime.CSCoreLibPlugin.Configuration.Config;
 import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.ClickAction;
 import me.mrCookieSlime.Slimefun.Objects.handlers.BlockTicker;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
@@ -133,15 +133,18 @@ public class NetworkQuantumStorage extends SlimefunItem implements DistinctiveIt
         if (cache.getItemStack() == null) {
             return;
         }
+
         for (ItemStack itemStack : input) {
             if (isBlacklisted(itemStack)) {
                 continue;
             }
+
             if (StackUtils.itemsMatch(cache, itemStack, true)) {
                 int leftover = cache.increaseAmount(itemStack.getAmount());
                 itemStack.setAmount(leftover);
             }
         }
+
         syncBlock(location, cache);
     }
 
@@ -154,7 +157,7 @@ public class NetworkQuantumStorage extends SlimefunItem implements DistinctiveIt
 
     @ParametersAreNonnullByDefault
     @Nullable
-    public static ItemStack getItemStack(@Nonnull QuantumCache cache, @Nonnull BlockMenu blockMenu) {
+    public static ItemStack getItemStack(QuantumCache cache, BlockMenu blockMenu) {
         if (cache.getItemStack() == null || cache.getAmount() <= 0) {
             return null;
         }
@@ -262,7 +265,7 @@ public class NetworkQuantumStorage extends SlimefunItem implements DistinctiveIt
                     }
 
                     @Override
-                    public void tick(Block b, SlimefunItem item, Config data) {
+                    public void tick(Block b, SlimefunItem item, SlimefunBlockData data) {
                         onTick(b);
                     }
                 },
@@ -586,7 +589,7 @@ public class NetworkQuantumStorage extends SlimefunItem implements DistinctiveIt
             final ItemMeta itemMeta = clone.getItemMeta();
             final List<String> lore = itemMeta.getLore();
             for (int i = 0; i < 3; i++) {
-                if (lore != null && lore.size() == 0) {
+                if (lore != null && lore.isEmpty()) {
                     break;
                 }
                 lore.remove(lore.size() - 1);

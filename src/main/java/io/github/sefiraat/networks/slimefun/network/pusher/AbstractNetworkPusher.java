@@ -1,6 +1,7 @@
 package io.github.sefiraat.networks.slimefun.network.pusher;
 
 import com.balugaq.netex.utils.BlockMenuUtil;
+import com.balugaq.netex.utils.Converter;
 import io.github.sefiraat.networks.NetworkStorage;
 import io.github.sefiraat.networks.network.NodeDefinition;
 import io.github.sefiraat.networks.network.NodeType;
@@ -79,17 +80,19 @@ public abstract class AbstractNetworkPusher extends NetworkDirectional {
                 continue;
             }
 
-            final ItemStack clone = testItem.clone();
-            clone.setAmount(1);
+            final ItemStack clone = Converter.getItem(testItem).asOne();
+
             final ItemRequest itemRequest = new ItemRequest(clone, clone.getMaxStackSize());
 
             int[] slots =
                     targetMenu.getPreset().getSlotsAccessedByItemTransport(targetMenu, ItemTransportFlow.INSERT, clone);
 
             for (int slot : slots) {
-                final ItemStack itemStack = targetMenu.getItemInSlot(slot);
+                ItemStack itemStack = targetMenu.getItemInSlot(slot);
 
                 if (itemStack != null && itemStack.getType() != Material.AIR) {
+                    itemStack = Converter.getItem(itemStack);
+
                     final int space = itemStack.getMaxStackSize() - itemStack.getAmount();
                     if (space > 0 && StackUtils.itemsMatch(itemRequest, itemStack, true)) {
                         itemRequest.setAmount(space);

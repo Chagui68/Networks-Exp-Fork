@@ -1,5 +1,7 @@
 package io.github.sefiraat.networks.network.stackcaches;
 
+import com.balugaq.netex.utils.Converter;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -14,7 +16,11 @@ public class ItemStackCache {
     private boolean metaCached = false;
 
     public ItemStackCache(@Nullable ItemStack itemStack) {
-        this.itemStack = itemStack;
+        if (itemStack instanceof SlimefunItemStack sfis) {
+            this.itemStack = Converter.getItem(sfis);
+        } else {
+            this.itemStack = itemStack;
+        }
     }
 
     @Nullable

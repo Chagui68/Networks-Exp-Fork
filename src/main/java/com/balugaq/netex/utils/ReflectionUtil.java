@@ -157,7 +157,7 @@ public class ReflectionUtil {
 
     public static @Nullable Field getField(@NotNull Class<?> clazz, @NotNull String fieldName) {
         while (clazz != Object.class) {
-            for (Field field : clazz.getDeclaredFields()) {
+            for (Field field : clazz.getFields()) {
                 if (field.getName().equals(fieldName)) {
                     return field;
                 }

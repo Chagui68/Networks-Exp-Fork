@@ -1002,10 +1002,10 @@ public class NetworkSlimefunItems {
         ItemStack[] realItems = new ItemStack[9];
         for (int i = 0; i < items.length; i++) {
             Object item = items[i];
-            if (item instanceof ItemStack is) {
-                realItems[i] = is;
-            } else if (item instanceof SlimefunItemStack sfis) {
+            if (item instanceof SlimefunItemStack sfis) {
                 realItems[i] = Converter.getItem(sfis);
+            } else if (item instanceof ItemStack is) {
+                realItems[i] = is;
             }
         }
 

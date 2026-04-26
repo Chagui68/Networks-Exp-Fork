@@ -109,7 +109,6 @@ public class NetworksSlimefunItemStacks {
     public static final SlimefunItemStack NETWORK_DEBUG_STICK;
 
     static {
-
         SYNTHETIC_EMERALD_SHARD = Theme.themedSlimefunItemStack(
                 "NTW_SYNTHETIC_EMERALD_SHARD",
                 new ItemStack(Material.LIME_DYE),

@@ -2,6 +2,7 @@ package io.github.sefiraat.networks.slimefun.network;
 
 import com.cryptomorin.xseries.XEnchantment;
 import com.cryptomorin.xseries.particles.XParticle;
+import com.xzavier0722.mc.plugin.slimefun4.storage.controller.SlimefunBlockData;
 import io.github.sefiraat.networks.NetworkStorage;
 import io.github.sefiraat.networks.network.NodeType;
 import io.github.sefiraat.networks.utils.ItemCreator;
@@ -16,7 +17,6 @@ import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
 import io.github.thebusybiscuit.slimefun4.core.handlers.BlockPlaceHandler;
 import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import io.github.thebusybiscuit.slimefun4.libraries.dough.protection.Interaction;
-import me.mrCookieSlime.CSCoreLibPlugin.Configuration.Config;
 import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.ClickAction;
 import me.mrCookieSlime.Slimefun.Objects.handlers.BlockTicker;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
@@ -91,7 +91,7 @@ public abstract class NetworkDirectional extends NetworkObject {
                     }
 
                     @Override
-                    public void tick(Block block, SlimefunItem slimefunItem, Config config) {
+                    public void tick(Block block, SlimefunItem slimefunItem, SlimefunBlockData config) {
                         if (tick <= 1) {
                             final BlockMenu blockMenu = BlockStorage.getInventory(block);
                             onTick(blockMenu, block);

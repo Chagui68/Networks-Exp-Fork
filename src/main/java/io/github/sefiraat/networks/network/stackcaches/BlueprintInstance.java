@@ -1,5 +1,8 @@
 package io.github.sefiraat.networks.network.stackcaches;
 
+import com.balugaq.netex.utils.Converter;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
+import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.inventory.ItemStack;
@@ -10,6 +13,7 @@ import javax.annotation.Nullable;
 
 public class BlueprintInstance extends ItemStackCache {
 
+    @Getter
     private final ItemStack[] recipeItems;
     @Nullable
     private Recipe recipe = null;
@@ -17,10 +21,6 @@ public class BlueprintInstance extends ItemStackCache {
     public BlueprintInstance(@Nonnull ItemStack[] recipeItems, @Nonnull ItemStack expectedOutput) {
         super(expectedOutput);
         this.recipeItems = recipeItems;
-    }
-
-    public ItemStack[] getRecipeItems() {
-        return recipeItems;
     }
 
     @Nullable

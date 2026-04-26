@@ -1,5 +1,6 @@
 package io.github.sefiraat.networks.slimefun.network;
 
+import com.balugaq.netex.utils.Converter;
 import io.github.sefiraat.networks.NetworkStorage;
 import io.github.sefiraat.networks.network.NodeDefinition;
 import io.github.sefiraat.networks.network.NodeType;
@@ -20,7 +21,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public class NetworkGrabber extends NetworkDirectional {
-
 
     public NetworkGrabber(ItemGroup itemGroup, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
         super(itemGroup, item, recipeType, recipe, NodeType.GRABBER);
@@ -51,7 +51,7 @@ public class NetworkGrabber extends NetworkDirectional {
         int[] slots = targetMenu.getPreset().getSlotsAccessedByItemTransport(targetMenu, ItemTransportFlow.WITHDRAW, null);
 
         for (int slot : slots) {
-            final ItemStack itemStack = targetMenu.getItemInSlot(slot);
+            ItemStack itemStack = targetMenu.getItemInSlot(slot);
 
             if (itemStack != null && itemStack.getType() != Material.AIR) {
                 int before = itemStack.getAmount();

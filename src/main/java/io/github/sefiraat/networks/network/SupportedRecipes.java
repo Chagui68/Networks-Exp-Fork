@@ -1,5 +1,6 @@
 package io.github.sefiraat.networks.network;
 
+import com.balugaq.netex.utils.Converter;
 import io.github.sefiraat.networks.utils.StackUtils;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
 import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
@@ -46,7 +47,7 @@ public final class SupportedRecipes {
 
     public boolean testRecipe(@Nonnull ItemStack[] input, @Nonnull ItemStack[] recipe) {
         for (int test = 0; test < recipe.length; test++) {
-            if (!StackUtils.itemsMatch(input[test], recipe[test])) {
+            if (!StackUtils.itemsMatch(input[test] == null ? null : Converter.getItem(input[test]), recipe[test] == null ? null : Converter.getItem(recipe[test]))) {
                 return false;
             }
         }
