@@ -1,6 +1,5 @@
 package io.github.sefiraat.networks.slimefun.network;
 
-import com.balugaq.netex.utils.Converter;
 import io.github.sefiraat.networks.network.stackcaches.QuantumCache;
 import io.github.sefiraat.networks.utils.ItemCreator;
 import io.github.sefiraat.networks.utils.Keys;
@@ -121,7 +120,7 @@ public class NetworkQuantumWorkbench extends SlimefunItem {
         // Fill the inputs
         for (int i = 0; i < RECIPE_SLOTS.length; i ++) {
             ItemStack stack = menu.getItemInSlot(RECIPE_SLOTS[i]);
-            inputs[i] = Converter.getItem(stack);
+            inputs[i] = stack;
         }
 
         ItemStack crafted = null;
@@ -168,7 +167,17 @@ public class NetworkQuantumWorkbench extends SlimefunItem {
 
     private boolean testRecipe(ItemStack[] input, ItemStack[] recipe) {
         for (int test = 0; test < recipe.length; test++) {
-            if (!SlimefunUtils.isItemSimilar(input[test], recipe[test], true, false, false)) {
+            ItemStack in = input[test];
+
+            if (in instanceof SlimefunItemStack || SlimefunItem.getByItem(in) != null) {
+                SlimefunItem si = SlimefunItem.getByItem(in);
+
+                if (si instanceof NetworkQuantumStorage) {
+                    in = SlimefunItem.getById(si.getId()).getItem().clone();
+                }
+            }
+
+            if (!SlimefunUtils.isItemSimilar(in, recipe[test], true, false, false)) {
                 return false;
             }
         }
