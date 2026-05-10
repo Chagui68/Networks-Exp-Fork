@@ -2,7 +2,7 @@ package io.github.sefiraat.networks.slimefun.network;
 
 import io.github.sefiraat.networks.Networks;
 import io.github.sefiraat.networks.utils.Theme;
-import me.mrCookieSlime.Slimefun.api.BlockStorage;
+import com.github.drakescraft_labs.slimefun4.legacy.api.BlockStorage;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
@@ -42,3 +42,14 @@ public interface AdminDebuggable {
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+

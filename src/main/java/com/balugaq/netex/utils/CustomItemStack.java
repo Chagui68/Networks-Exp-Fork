@@ -1,7 +1,7 @@
 package com.balugaq.netex.utils;
 
 import com.google.common.base.Preconditions;
-import io.github.thebusybiscuit.slimefun4.libraries.dough.common.ChatColors;
+import com.github.drakescraft_labs.slimefun4.libraries.dough.common.ChatColors;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemFlag;
@@ -345,3 +345,14 @@ public record CustomItemStack(@NotNull ItemStack delegate) implements Cloneable 
         return new CustomItemStack(delegate());
     }
 }
+
+
+
+
+
+
+
+
+
+
+

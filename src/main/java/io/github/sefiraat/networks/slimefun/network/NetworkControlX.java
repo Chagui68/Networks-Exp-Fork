@@ -1,29 +1,25 @@
 package io.github.sefiraat.networks.slimefun.network;
 
-import dev.sefiraat.sefilib.misc.ParticleUtils;
-import dev.sefiraat.sefilib.world.LocationUtils;
+import dev.drake.sefilib.misc.ParticleUtils;
+import dev.drake.sefilib.world.LocationUtils;
 import io.github.sefiraat.networks.NetworkStorage;
 import io.github.sefiraat.networks.Networks;
 import io.github.sefiraat.networks.network.NodeDefinition;
 import io.github.sefiraat.networks.network.NodeType;
 import io.github.sefiraat.networks.utils.ItemCreator;
 import io.github.sefiraat.networks.utils.Theme;
-import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
-import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
-import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
-import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
-import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
-import io.github.thebusybiscuit.slimefun4.libraries.dough.blocks.BlockPosition;
-import io.github.thebusybiscuit.slimefun4.libraries.dough.protection.Interaction;
-import me.mrCookieSlime.Slimefun.api.BlockStorage;
-import me.mrCookieSlime.Slimefun.api.inventory.BlockMenu;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.lighting.LevelLightEngine;
+import com.github.drakescraft_labs.slimefun4.api.items.ItemGroup;
+import com.github.drakescraft_labs.slimefun4.api.items.SlimefunItem;
+import com.github.drakescraft_labs.slimefun4.api.items.SlimefunItemStack;
+import com.github.drakescraft_labs.slimefun4.api.recipes.RecipeType;
+import com.github.drakescraft_labs.slimefun4.implementation.Slimefun;
+import com.github.drakescraft_labs.slimefun4.libraries.dough.blocks.BlockPosition;
+import com.github.drakescraft_labs.slimefun4.libraries.dough.protection.Interaction;
+import com.github.drakescraft_labs.slimefun4.legacy.api.BlockStorage;
+import com.github.drakescraft_labs.slimefun4.legacy.api.inventory.BlockMenu;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.craftbukkit.block.CraftBlock;
 import org.bukkit.inventory.ItemStack;
 
 import javax.annotation.Nonnull;
@@ -31,6 +27,7 @@ import javax.annotation.Nullable;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
+import com.github.drakescraft_labs.slimefun4.libraries.dough.protection.ProtectionManager;
 
 public class NetworkControlX extends NetworkDirectional {
 
@@ -119,7 +116,7 @@ public class NetworkControlX extends NetworkDirectional {
         final UUID uuid = UUID.fromString(BlockStorage.getLocationInfo(blockMenu.getLocation(), OWNER_KEY));
         final OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(uuid);
 
-        if (!Slimefun.getProtectionManager().hasPermission(offlinePlayer, targetBlock, Interaction.BREAK_BLOCK)) {
+        if (!Slimefun.getProtectionManager().hasPermission(offlinePlayer, targetBlock.getLocation(), Interaction.BREAK_BLOCK)) {
             return;
         }
 
@@ -146,22 +143,16 @@ public class NetworkControlX extends NetworkDirectional {
         definition.getNode().getRoot().addItemStack0(blockMenu.getBlock().getLocation(), resultStack);
 
         if (resultStack.getAmount() == 0) {
-            CraftBlock cb = ((CraftBlock) targetBlock);
-            ServerLevel level = cb.getCraftWorld().getHandle();
-            LevelLightEngine ll = level.chunkSource.getLightEngine();
-
             this.blockCache.add(targetPosition);
 
             Bukkit.getScheduler().runTask(Networks.getInstance(), bukkitTask -> {
-                level.removeBlockEntity(cb.getPosition());
-                level.setBlock(cb.getPosition(), Blocks.AIR.defaultBlockState(), 3);
-                ll.checkBlock(cb.getPosition());
+                targetBlock.setType(Material.AIR);
 
                 ParticleUtils.displayParticleRandomly(
-                        LocationUtils.centre(targetBlock.getLocation()),
-                        1,
-                        5,
-                        DUST_OPTIONS
+                    LocationUtils.centre(targetBlock.getLocation()),
+                    1.0,
+                    5,
+                    DUST_OPTIONS
                 );
 
                 definition.getNode().getRoot().removeRootPower(REQUIRED_POWER);
@@ -227,3 +218,13 @@ public class NetworkControlX extends NetworkDirectional {
         return DUST_OPTIONS;
     }
 }
+
+
+
+
+
+
+
+
+
+

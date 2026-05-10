@@ -62,3 +62,14 @@ public class PersistentCardInstanceType implements PersistentDataType<Persistent
         return new CardInstance(item, amount, limit);
     }
 }
+
+
+
+
+
+
+
+
+
+
+

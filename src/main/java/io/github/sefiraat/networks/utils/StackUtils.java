@@ -2,8 +2,8 @@ package io.github.sefiraat.networks.utils;
 
 import com.balugaq.netex.utils.Converter;
 import io.github.sefiraat.networks.network.stackcaches.ItemStackCache;
-import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
-import io.github.thebusybiscuit.slimefun4.libraries.dough.data.persistent.PersistentDataAPI;
+import com.github.drakescraft_labs.slimefun4.implementation.Slimefun;
+import com.github.drakescraft_labs.slimefun4.libraries.dough.data.persistent.PersistentDataAPI;
 import lombok.experimental.UtilityClass;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.inventory.ItemStack;
@@ -329,3 +329,14 @@ public class StackUtils {
         return false;
     }
 }
+
+
+
+
+
+
+
+
+
+
+

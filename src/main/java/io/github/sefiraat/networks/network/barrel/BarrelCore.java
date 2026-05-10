@@ -21,3 +21,14 @@ public interface BarrelCore {
 
     int getOutputSlot();
 }
+
+
+
+
+
+
+
+
+
+
+

@@ -6,14 +6,14 @@ import io.github.sefiraat.networks.Networks;
 import io.github.sefiraat.networks.listeners.BlockStateRefreshListener;
 import io.github.sefiraat.networks.network.NodeDefinition;
 import io.github.sefiraat.networks.network.NodeType;
-import io.github.thebusybiscuit.slimefun4.api.MinecraftVersion;
-import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
-import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
-import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
-import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
-import io.github.thebusybiscuit.slimefun4.libraries.dough.protection.Interaction;
-import me.mrCookieSlime.Slimefun.api.BlockStorage;
-import me.mrCookieSlime.Slimefun.api.inventory.BlockMenu;
+import com.github.drakescraft_labs.slimefun4.api.MinecraftVersion;
+import com.github.drakescraft_labs.slimefun4.api.items.ItemGroup;
+import com.github.drakescraft_labs.slimefun4.api.items.SlimefunItemStack;
+import com.github.drakescraft_labs.slimefun4.api.recipes.RecipeType;
+import com.github.drakescraft_labs.slimefun4.implementation.Slimefun;
+import com.github.drakescraft_labs.slimefun4.libraries.dough.protection.Interaction;
+import com.github.drakescraft_labs.slimefun4.legacy.api.BlockStorage;
+import com.github.drakescraft_labs.slimefun4.legacy.api.inventory.BlockMenu;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -26,6 +26,7 @@ import org.bukkit.potion.PotionType;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.UUID;
+import com.github.drakescraft_labs.slimefun4.libraries.dough.protection.ProtectionManager;
 
 public class NetworkVanillaGrabber extends NetworkDirectional {
 
@@ -77,7 +78,7 @@ public class NetworkVanillaGrabber extends NetworkDirectional {
         final UUID uuid = UUID.fromString(BlockStorage.getLocationInfo(block.getLocation(), OWNER_KEY));
         final OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(uuid);
 
-        if (!Slimefun.getProtectionManager().hasPermission(offlinePlayer, targetBlock, Interaction.INTERACT_BLOCK)) {
+        if (!Slimefun.getProtectionManager().hasPermission(offlinePlayer, targetBlock.getLocation(), Interaction.INTERACT_BLOCK)) {
             return;
         }
 
@@ -114,14 +115,14 @@ public class NetworkVanillaGrabber extends NetworkDirectional {
             for (int i = 0; i < 3; i++) {
                 final ItemStack stack = brewerInventory.getContents()[i];
                 if (stack != null && stack.getType() != Material.AIR) { // 网拓复制过来的，包能跑
-                    final PotionMeta potionMeta = (PotionMeta) stack.getItemMeta();
-                    if (Slimefun.getMinecraftVersion().isAtLeast(MinecraftVersion.MINECRAFT_1_20_5)) {
-                        // 1.20.5 及以上
-                        if (potionMeta.getBasePotionType() == PotionType.WATER) {
-                            grabItem(blockMenu, stack);
-                        }
-                    } else {
-                        // 1.20.5 以下
+                final PotionMeta potionMeta = (PotionMeta) stack.getItemMeta();
+                    if (Slimefun.getMinecraftVersion().isAtLeast(com.github.drakescraft_labs.slimefun4.api.MinecraftVersion.MINECRAFT_1_20_5)) {
+                    // 1.20.5 or higher
+                    if (potionMeta.getBasePotionType() == PotionType.WATER) {
+                        grabItem(blockMenu, stack);
+                    }
+                } else {
+                    // Below 1.20.5
                         PotionData bpd = potionMeta.getBasePotionData();
                         if (bpd != null && bpd.getType() != PotionType.WATER) {
                             grabItem(blockMenu, stack);
@@ -200,3 +201,14 @@ public class NetworkVanillaGrabber extends NetworkDirectional {
         return new Particle.DustOptions(Color.MAROON, 1);
     }
 }
+
+
+
+
+
+
+
+
+
+
+

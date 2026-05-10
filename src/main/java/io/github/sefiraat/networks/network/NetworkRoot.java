@@ -3,8 +3,8 @@ package io.github.sefiraat.networks.network;
 import com.balugaq.netex.utils.BlockMenuUtil;
 import com.balugaq.netex.utils.Converter;
 import com.cryptomorin.xseries.particles.XParticle;
-import com.xzavier0722.mc.plugin.slimefun4.storage.controller.SlimefunBlockData;
-import com.xzavier0722.mc.plugin.slimefun4.storage.util.StorageCacheUtils;
+import me.mrCookieSlime.CSCoreLibPlugin.Configuration.Config;
+// StorageCacheUtils removed; using BlockStorage
 import io.github.mooy1.infinityexpansion.items.storage.StorageCache;
 import io.github.mooy1.infinityexpansion.items.storage.StorageUnit;
 import io.github.sefiraat.networks.Networks;
@@ -15,12 +15,12 @@ import io.github.sefiraat.networks.network.stackcaches.ItemRequest;
 import io.github.sefiraat.networks.network.stackcaches.QuantumCache;
 import io.github.sefiraat.networks.slimefun.network.*;
 import io.github.sefiraat.networks.utils.StackUtils;
-import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
+import com.github.drakescraft_labs.slimefun4.api.items.SlimefunItem;
 import lombok.Getter;
 import lombok.Setter;
-import me.mrCookieSlime.Slimefun.api.BlockStorage;
-import me.mrCookieSlime.Slimefun.api.inventory.BlockMenu;
-import me.mrCookieSlime.Slimefun.api.item_transport.ItemTransportFlow;
+import com.github.drakescraft_labs.slimefun4.legacy.api.BlockStorage;
+import com.github.drakescraft_labs.slimefun4.legacy.api.inventory.BlockMenu;
+import com.github.drakescraft_labs.slimefun4.legacy.api.item_transport.ItemTransportFlow;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Warning;
@@ -201,10 +201,10 @@ public class NetworkRoot extends NetworkNode {
 
     @Nullable
     public static InfinityBarrel getInfinityBarrel(
-            @NotNull BlockMenu blockMenu, @NotNull StorageUnit storageUnit, boolean includeEmpty) {
+        @NotNull BlockMenu blockMenu, @NotNull StorageUnit storageUnit, boolean includeEmpty) {
         final ItemStack itemStack = blockMenu.getItemInSlot(16);
-        final SlimefunBlockData data = StorageCacheUtils.getBlock(blockMenu.getLocation());
-        final String storedString = data.getData("stored");
+        final Config data = BlockStorage.getLocationInfo(blockMenu.getLocation());
+        final String storedString = data.getString("stored");
 
         if (storedString == null) {
             return null;
@@ -1310,3 +1310,13 @@ public class NetworkRoot extends NetworkNode {
         }
     }
 }
+
+
+
+
+
+
+
+
+
+

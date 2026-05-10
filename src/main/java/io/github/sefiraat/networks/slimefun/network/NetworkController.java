@@ -1,21 +1,21 @@
 package io.github.sefiraat.networks.slimefun.network;
 
-import com.xzavier0722.mc.plugin.slimefun4.storage.controller.SlimefunBlockData;
+import me.mrCookieSlime.CSCoreLibPlugin.Configuration.Config;
 import io.github.sefiraat.networks.NetworkStorage;
 import io.github.sefiraat.networks.network.NetworkNode;
 import io.github.sefiraat.networks.network.NetworkRoot;
 import io.github.sefiraat.networks.network.NodeDefinition;
 import io.github.sefiraat.networks.network.NodeType;
-import io.github.thebusybiscuit.slimefun4.api.events.PlayerRightClickEvent;
-import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
-import io.github.thebusybiscuit.slimefun4.api.items.ItemSetting;
-import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
-import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
-import io.github.thebusybiscuit.slimefun4.api.items.settings.IntRangeSetting;
-import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
+import com.github.drakescraft_labs.slimefun4.api.events.PlayerRightClickEvent;
+import com.github.drakescraft_labs.slimefun4.api.items.ItemGroup;
+import com.github.drakescraft_labs.slimefun4.api.items.ItemSetting;
+import com.github.drakescraft_labs.slimefun4.api.items.SlimefunItem;
+import com.github.drakescraft_labs.slimefun4.api.items.SlimefunItemStack;
+import com.github.drakescraft_labs.slimefun4.api.items.settings.IntRangeSetting;
+import com.github.drakescraft_labs.slimefun4.api.recipes.RecipeType;
 import lombok.Getter;
-import me.mrCookieSlime.Slimefun.Objects.handlers.BlockTicker;
-import me.mrCookieSlime.Slimefun.api.BlockStorage;
+import com.github.drakescraft_labs.slimefun4.legacy.Objects.handlers.BlockTicker;
+import com.github.drakescraft_labs.slimefun4.legacy.api.BlockStorage;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -47,7 +47,7 @@ public class NetworkController extends NetworkObject {
                     }
 
                     @Override
-                    public void tick(Block block, SlimefunItem item, SlimefunBlockData data) {
+                    public void tick(Block block, SlimefunItem item, Config data) {
                         if (!firstTickMap.containsKey(block.getLocation())) {
                             onFirstTick(block, data);
                             firstTickMap.put(block.getLocation(), true);
@@ -131,10 +131,21 @@ public class NetworkController extends NetworkObject {
         }
     }
 
-    private void onFirstTick(@Nonnull Block block, @Nonnull SlimefunBlockData data) {
-        final String crayon = data.getData(CRAYON);
+    private void onFirstTick(@Nonnull Block block, @Nonnull Config data) {
+        final String crayon = data.getString(CRAYON);
         if (Boolean.parseBoolean(crayon)) {
             CRAYONS.add(block.getLocation());
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+

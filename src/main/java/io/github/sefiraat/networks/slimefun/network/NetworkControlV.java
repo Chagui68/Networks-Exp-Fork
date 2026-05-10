@@ -1,8 +1,8 @@
 package io.github.sefiraat.networks.slimefun.network;
 
 import com.gmail.nossr50.mcMMO;
-import dev.sefiraat.sefilib.misc.ParticleUtils;
-import dev.sefiraat.sefilib.world.LocationUtils;
+import dev.drake.sefilib.misc.ParticleUtils;
+import dev.drake.sefilib.world.LocationUtils;
 import io.github.sefiraat.networks.NetworkStorage;
 import io.github.sefiraat.networks.Networks;
 import io.github.sefiraat.networks.managers.SupportedPluginManager;
@@ -11,24 +11,19 @@ import io.github.sefiraat.networks.network.NodeType;
 import io.github.sefiraat.networks.network.stackcaches.ItemRequest;
 import io.github.sefiraat.networks.utils.ItemCreator;
 import io.github.sefiraat.networks.utils.Theme;
-import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
-import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
-import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
-import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
-import io.github.thebusybiscuit.slimefun4.libraries.dough.blocks.BlockPosition;
-import io.github.thebusybiscuit.slimefun4.utils.tags.SlimefunTag;
-import me.mrCookieSlime.Slimefun.api.inventory.BlockMenu;
-import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.lighting.LevelLightEngine;
+import com.github.drakescraft_labs.slimefun4.api.items.ItemGroup;
+import com.github.drakescraft_labs.slimefun4.api.items.SlimefunItem;
+import com.github.drakescraft_labs.slimefun4.api.items.SlimefunItemStack;
+import com.github.drakescraft_labs.slimefun4.api.recipes.RecipeType;
+import com.github.drakescraft_labs.slimefun4.libraries.dough.blocks.BlockPosition;
+import com.github.drakescraft_labs.slimefun4.utils.tags.SlimefunTag;
+import com.github.drakescraft_labs.slimefun4.legacy.api.inventory.BlockMenu;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.craftbukkit.block.CraftBlock;
-import org.bukkit.craftbukkit.util.CraftMagicNumbers;
 import org.bukkit.inventory.ItemStack;
 
 import javax.annotation.Nonnull;
@@ -128,26 +123,19 @@ public class NetworkControlV extends NetworkDirectional {
             return;
         }
 
-        CraftBlock cb = (CraftBlock) targetBlock;
-        LevelAccessor level = ((CraftBlock) targetBlock).getHandle();
-        BlockState bs = CraftMagicNumbers.getBlock(fetchedStack.getType()).defaultBlockState();
-        LevelLightEngine engine = level.getLightEngine();
-
         this.blockCache.add(targetPosition);
         Bukkit.getScheduler().runTask(Networks.getInstance(), bukkitTask -> {
-            level.getMinecraftWorld().removeBlockEntity(cb.getPosition());
-            level.setBlock(cb.getPosition(), bs, 3);
-            engine.checkBlock(cb.getPosition());
+            targetBlock.setType(fetchedStack.getType());
 
             if (SupportedPluginManager.getInstance().isMcMMO()) {
                 mcMMO.getUserBlockTracker().setIneligible(targetBlock);
             }
 
             ParticleUtils.displayParticleRandomly(
-                    LocationUtils.centre(targetBlock.getLocation()),
-                    Particle.ELECTRIC_SPARK,
-                    1,
-                    5
+                LocationUtils.centre(targetBlock.getLocation()),
+                Particle.ELECTRIC_SPARK,
+                1.0,
+                5
             );
         });
     }
@@ -210,3 +198,14 @@ public class NetworkControlV extends NetworkDirectional {
         return new Particle.DustOptions(Color.MAROON, 1);
     }
 }
+
+
+
+
+
+
+
+
+
+
+

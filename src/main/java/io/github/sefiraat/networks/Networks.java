@@ -1,6 +1,10 @@
 package io.github.sefiraat.networks;
 
 import com.balugaq.netex.utils.Converter;
+import com.github.drakescraft_labs.slimefun4.api.SlimefunAddon;
+import com.github.drakescraft_labs.slimefun4.implementation.Slimefun;
+import com.github.drakescraft_labs.slimefun4.legacy.api.BlockStorage;
+import com.github.drakescraft_labs.slimefun4.libraries.dough.updater.BlobBuildUpdater;
 import io.github.sefiraat.networks.commands.NetworksMain;
 import io.github.sefiraat.networks.integrations.HudCallbacks;
 import io.github.sefiraat.networks.integrations.NetheoPlants;
@@ -10,20 +14,13 @@ import io.github.sefiraat.networks.slimefun.NetworkSlimefunItems;
 import io.github.sefiraat.networks.slimefun.NetworksSlimefunItemStacks;
 import io.github.sefiraat.networks.slimefun.network.NetworkController;
 import io.github.sefiraat.networks.utils.NetworkUtils;
-import io.github.thebusybiscuit.slimefun4.api.SlimefunAddon;
-import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
-import io.github.thebusybiscuit.slimefun4.libraries.dough.updater.BlobBuildUpdater;
 import lombok.Getter;
-import me.mrCookieSlime.Slimefun.api.BlockStorage;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.lighting.LevelLightEngine;
 import org.bstats.bukkit.Metrics;
 import org.bstats.charts.AdvancedPie;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.craftbukkit.CraftWorld;
-import org.bukkit.craftbukkit.block.CraftBlock;
+import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -70,23 +67,24 @@ public class Networks extends JavaPlugin implements SlimefunAddon {
     }
 
     @Override
-    public void onEnable() {
-        instance = this;
+  public void onEnable() {
+    instance = this;
 
-        getLogger().info("########################################");
-        getLogger().info("         Networks - By Sefiraat         ");
-        getLogger().info("           Changed by mmmjjkx           ");
-        getLogger().info("########################################");
+    getLogger().info("########################################");
+    getLogger().info(" Networks - By Sefiraat ");
+    getLogger().info(" Changed by mmmjjkx ");
+    getLogger().info("########################################");
 
-        saveDefaultConfig();
-        tryUpdate();
+    saveDefaultConfig();
+    tryUpdate();
 
-        this.supportedPluginManager = new SupportedPluginManager();
+    this.supportedPluginManager = new SupportedPluginManager();
 
-        setupSlimefun();
+    // Delay setupSlimefun() to ensure Slimefun is loaded first
+    Bukkit.getScheduler().runTaskLater(this, this::setupSlimefun, 1L);
 
-        this.listenerManager = new ListenerManager();
-        this.getCommand("networks").setExecutor(new NetworksMain());
+    this.listenerManager = new ListenerManager();
+    this.getCommand("networks").setExecutor(new NetworksMain());
 
         // Fix dupe bug which break the network controller data without player interaction
         Bukkit.getScheduler().runTaskTimer(
@@ -111,18 +109,11 @@ public class Networks extends JavaPlugin implements SlimefunAddon {
         Bukkit.getScheduler().runTaskTimerAsynchronously(this, () -> {
             for (Location c : controllersSet) {
                 if (BlockStorage.check(c) instanceof NetworkController) {
-                    CraftBlock cb = ((CraftBlock) c.getBlock());
-                    CraftWorld cw = ((CraftWorld) c.getWorld());
-
-                    ServerLevel level = cw.getHandle();
-                    LevelLightEngine ll = level.chunkSource.getLightEngine();
-
+                    Block block = c.getBlock();
+                    
                     Bukkit.getScheduler().runTask(this, () -> {
-                        cw.dropItemNaturally(cb.getLocation(), Converter.getItem(NetworksSlimefunItemStacks.NETWORK_CONTROLLER));
-
-                        level.setBlock(cb.getPosition(), Blocks.AIR.defaultBlockState(), 0);
-                        level.getMinecraftWorld().sendBlockUpdated(cb.getPosition(), cb.getNMS(), Blocks.AIR.defaultBlockState(), 3);
-                        ll.checkBlock(cb.getPosition());
+                        block.getWorld().dropItemNaturally(block.getLocation(), Converter.getItem(NetworksSlimefunItemStacks.NETWORK_CONTROLLER));
+                        block.setType(Material.AIR);
                     });
 
                     BlockStorage.clearBlockInfo(c);
@@ -130,11 +121,9 @@ public class Networks extends JavaPlugin implements SlimefunAddon {
                 }
             }
 
-            controllersSet.clear();
-        }, 5, 10);
-
-        setupMetrics();
-    }
+ controllersSet.clear();
+ }, 5, 10);
+ }
 
     public void tryUpdate() {
         if (getConfig().getBoolean("auto-update") && getPluginMeta().getVersion().startsWith("Dev")) {
@@ -144,13 +133,14 @@ public class Networks extends JavaPlugin implements SlimefunAddon {
 
     public void setupSlimefun() {
         NetworkSlimefunItems.setup();
-        if (supportedPluginManager.isNetheopoiesis()) {
-            try {
-                NetheoPlants.setup();
-            } catch (NoClassDefFoundError e) {
-                getLogger().severe("Netheopoiesis must be updated to meet Networks' requirements.");
-            }
-        }
+        // TODO: Re-enable NetheoPlants integration once ported
+        // if (supportedPluginManager.isNetheopoiesis()) {
+        //     try {
+        //         NetheoPlants.setup();
+        //     } catch (NoClassDefFoundError e) {
+        //         getLogger().severe("Netheopoiesis must be updated to meet Networks' requirements.");
+        //     }
+        // }
         if (supportedPluginManager.isSlimeHud()) {
             try {
                 HudCallbacks.setup();
@@ -184,3 +174,14 @@ public class Networks extends JavaPlugin implements SlimefunAddon {
         return MessageFormat.format("https://github.com/{0}/{1}/issues/", this.username, this.repo);
     }
 }
+
+
+
+
+
+
+
+
+
+
+

@@ -67,3 +67,14 @@ public class PersistentQuantumStorageType implements PersistentDataType<Persiste
         return new QuantumCache(item, amount, limit, voidExcess);
     }
 }
+
+
+
+
+
+
+
+
+
+
+

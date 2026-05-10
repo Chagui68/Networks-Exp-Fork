@@ -39,3 +39,14 @@ public interface CanCooldown {
         StackUtils.putOnCooldown(itemStack, this.cooldownDuration());
     }
 }
+
+
+
+
+
+
+
+
+
+
+

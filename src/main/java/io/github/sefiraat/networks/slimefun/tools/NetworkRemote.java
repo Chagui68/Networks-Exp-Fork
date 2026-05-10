@@ -5,18 +5,19 @@ import io.github.sefiraat.networks.slimefun.network.grid.NetworkGrid;
 import io.github.sefiraat.networks.utils.Keys;
 import io.github.sefiraat.networks.utils.Theme;
 import io.github.sefiraat.networks.utils.datatypes.DataTypeMethods;
-import io.github.thebusybiscuit.slimefun4.api.events.PlayerRightClickEvent;
-import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
-import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
-import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
-import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
-import io.github.thebusybiscuit.slimefun4.core.handlers.ItemUseHandler;
-import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
-import io.github.thebusybiscuit.slimefun4.libraries.dough.protection.Interaction;
-import me.mrCookieSlime.Slimefun.api.BlockStorage;
-import me.mrCookieSlime.Slimefun.api.inventory.BlockMenu;
+import com.github.drakescraft_labs.slimefun4.api.events.PlayerRightClickEvent;
+import com.github.drakescraft_labs.slimefun4.api.items.ItemGroup;
+import com.github.drakescraft_labs.slimefun4.api.items.SlimefunItem;
+import com.github.drakescraft_labs.slimefun4.api.items.SlimefunItemStack;
+import com.github.drakescraft_labs.slimefun4.api.recipes.RecipeType;
+import com.github.drakescraft_labs.slimefun4.core.handlers.ItemUseHandler;
+import com.github.drakescraft_labs.slimefun4.implementation.Slimefun;
+import com.github.drakescraft_labs.slimefun4.libraries.dough.protection.Interaction;
+import com.github.drakescraft_labs.slimefun4.legacy.api.BlockStorage;
+import com.github.drakescraft_labs.slimefun4.legacy.api.inventory.BlockMenu;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -24,6 +25,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import javax.annotation.Nonnull;
 import java.util.Optional;
+import com.github.drakescraft_labs.slimefun4.libraries.dough.protection.ProtectionManager;
 
 public class NetworkRemote extends SlimefunItem {
 
@@ -50,9 +52,9 @@ public class NetworkRemote extends SlimefunItem {
                             if (optional.isPresent()) {
                                 final Block block = optional.get();
                                 final SlimefunItem slimefunItem = BlockStorage.check(block);
-                                if (Slimefun.getProtectionManager().hasPermission(player, block, Interaction.INTERACT_BLOCK)
-                                        && slimefunItem instanceof NetworkGrid
-                                ) {
+    if (Slimefun.getProtectionManager().hasPermission(player, block.getLocation(), Interaction.INTERACT_BLOCK)
+        && slimefunItem instanceof NetworkGrid
+    ) {
                                     setGrid(e.getItem(), block, player);
                                 } else {
                                     player.sendMessage(Theme.ERROR + "Must be set to a Network Grid (not crafting grid).");
@@ -103,9 +105,9 @@ public class NetworkRemote extends SlimefunItem {
     public static void openGrid(@Nonnull Location location, @Nonnull Player player) {
         BlockMenu blockMenu = BlockStorage.getInventory(location);
         SlimefunItem slimefunItem = BlockStorage.check(location);
-        if (slimefunItem instanceof NetworkGrid
-                && Slimefun.getProtectionManager().hasPermission(player, location, Interaction.INTERACT_BLOCK)
-        ) {
+    if (slimefunItem instanceof NetworkGrid
+        && Slimefun.getProtectionManager().hasPermission(player, location, Interaction.INTERACT_BLOCK)
+    ) {
             blockMenu.open(player);
         } else {
             player.sendMessage(Theme.ERROR + "The bound grid can no longer be found.");
@@ -120,3 +122,13 @@ public class NetworkRemote extends SlimefunItem {
         return this.range;
     }
 }
+
+
+
+
+
+
+
+
+
+

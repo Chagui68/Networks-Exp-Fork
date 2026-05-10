@@ -1,7 +1,6 @@
 package io.github.sefiraat.networks.utils;
 
-import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemDefinition;
-import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
+import com.github.drakescraft_labs.slimefun4.api.items.SlimefunItemStack;
 import lombok.Getter;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Material;
@@ -65,12 +64,12 @@ public enum Theme {
         }
         finalLore.add("");
         finalLore.add(applyThemeToString(Theme.CLICK_INFO, themeType.getLoreLine()));
-        return new SlimefunItemDefinition(
-                id,
-                itemStack,
-                Theme.applyThemeToString(themeType, name),
-                finalLore.toArray(new String[finalLore.size() - 1])
-        ).clone();
+        return new SlimefunItemStack(
+            id,
+            itemStack,
+            Theme.applyThemeToString(themeType, name),
+            finalLore.toArray(new String[0])
+        );
     }
 
     /**
@@ -126,3 +125,14 @@ public enum Theme {
         return this.color.toString();
     }
 }
+
+
+
+
+
+
+
+
+
+
+

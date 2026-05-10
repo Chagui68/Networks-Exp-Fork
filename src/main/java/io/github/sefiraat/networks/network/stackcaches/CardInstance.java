@@ -1,7 +1,7 @@
 package io.github.sefiraat.networks.network.stackcaches;
 
 import io.github.sefiraat.networks.utils.Theme;
-import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
+import com.github.drakescraft_labs.slimefun4.api.items.SlimefunItemStack;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.ChatColor;
@@ -80,3 +80,14 @@ public class CardInstance extends ItemStackCache {
         return Theme.CLICK_INFO + name + ": " + Theme.PASSIVE + this.amount;
     }
 }
+
+
+
+
+
+
+
+
+
+
+

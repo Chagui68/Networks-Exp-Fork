@@ -1,7 +1,7 @@
 package io.github.sefiraat.networks.network.stackcaches;
 
 import com.balugaq.netex.utils.Converter;
-import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
+import com.github.drakescraft_labs.slimefun4.api.items.SlimefunItemStack;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -50,3 +50,14 @@ public class ItemStackCache {
         return this.itemStack.getType();
     }
 }
+
+
+
+
+
+
+
+
+
+
+

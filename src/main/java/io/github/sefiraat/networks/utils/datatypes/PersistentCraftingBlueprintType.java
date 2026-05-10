@@ -58,3 +58,14 @@ public class PersistentCraftingBlueprintType implements PersistentDataType<Persi
         return new BlueprintInstance(recipe, output);
     }
 }
+
+
+
+
+
+
+
+
+
+
+

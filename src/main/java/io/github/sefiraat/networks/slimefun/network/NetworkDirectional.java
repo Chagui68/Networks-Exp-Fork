@@ -2,31 +2,32 @@ package io.github.sefiraat.networks.slimefun.network;
 
 import com.cryptomorin.xseries.XEnchantment;
 import com.cryptomorin.xseries.particles.XParticle;
-import com.xzavier0722.mc.plugin.slimefun4.storage.controller.SlimefunBlockData;
+import me.mrCookieSlime.CSCoreLibPlugin.Configuration.Config;
 import io.github.sefiraat.networks.NetworkStorage;
 import io.github.sefiraat.networks.network.NodeType;
 import io.github.sefiraat.networks.utils.ItemCreator;
 import io.github.sefiraat.networks.utils.NetworkUtils;
 import io.github.sefiraat.networks.utils.Theme;
-import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
-import io.github.thebusybiscuit.slimefun4.api.items.ItemSetting;
-import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
-import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
-import io.github.thebusybiscuit.slimefun4.api.items.settings.IntRangeSetting;
-import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
-import io.github.thebusybiscuit.slimefun4.core.handlers.BlockPlaceHandler;
-import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
-import io.github.thebusybiscuit.slimefun4.libraries.dough.protection.Interaction;
+import com.github.drakescraft_labs.slimefun4.api.items.ItemGroup;
+import com.github.drakescraft_labs.slimefun4.api.items.ItemSetting;
+import com.github.drakescraft_labs.slimefun4.api.items.SlimefunItem;
+import com.github.drakescraft_labs.slimefun4.api.items.SlimefunItemStack;
+import com.github.drakescraft_labs.slimefun4.api.items.settings.IntRangeSetting;
+import com.github.drakescraft_labs.slimefun4.api.recipes.RecipeType;
+import com.github.drakescraft_labs.slimefun4.core.handlers.BlockPlaceHandler;
+import com.github.drakescraft_labs.slimefun4.implementation.Slimefun;
+import com.github.drakescraft_labs.slimefun4.libraries.dough.protection.Interaction;
 import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.ClickAction;
-import me.mrCookieSlime.Slimefun.Objects.handlers.BlockTicker;
-import me.mrCookieSlime.Slimefun.api.BlockStorage;
-import me.mrCookieSlime.Slimefun.api.inventory.BlockMenu;
-import me.mrCookieSlime.Slimefun.api.inventory.BlockMenuPreset;
-import me.mrCookieSlime.Slimefun.api.item_transport.ItemTransportFlow;
+import com.github.drakescraft_labs.slimefun4.legacy.Objects.handlers.BlockTicker;
+import com.github.drakescraft_labs.slimefun4.legacy.api.BlockStorage;
+import com.github.drakescraft_labs.slimefun4.legacy.api.inventory.BlockMenu;
+import com.github.drakescraft_labs.slimefun4.legacy.api.inventory.BlockMenuPreset;
+import com.github.drakescraft_labs.slimefun4.legacy.api.item_transport.ItemTransportFlow;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.Particle;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -42,6 +43,7 @@ import javax.annotation.Nullable;
 import javax.annotation.OverridingMethodsMustInvokeSuper;
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.*;
+import com.github.drakescraft_labs.slimefun4.libraries.dough.protection.ProtectionManager;
 
 @SuppressWarnings({"DuplicatedCode", "deprecation"})
 public abstract class NetworkDirectional extends NetworkObject {
@@ -91,7 +93,7 @@ public abstract class NetworkDirectional extends NetworkObject {
                     }
 
                     @Override
-                    public void tick(Block block, SlimefunItem slimefunItem, SlimefunBlockData config) {
+                    public void tick(Block block, SlimefunItem slimefunItem, Config config) {
                         if (tick <= 1) {
                             final BlockMenu blockMenu = BlockStorage.getInventory(block);
                             onTick(blockMenu, block);
@@ -275,12 +277,12 @@ public abstract class NetworkDirectional extends NetworkObject {
                         directionClick(player, clickAction, blockMenu, BlockFace.DOWN));
             }
 
-            @Override
-            public boolean canOpen(@Nonnull Block block, @Nonnull Player player) {
-                // Check whether the player can use this item and has protection permission.
-                return NetworkDirectional.this.canUse(player, false)
-                        && Slimefun.getProtectionManager().hasPermission(player, block.getLocation(), Interaction.INTERACT_BLOCK);
-            }
+    @Override
+    public boolean canOpen(@Nonnull Block block, @Nonnull Player player) {
+        // Check whether the player can use this item and has protection permission.
+        return NetworkDirectional.this.canUse(player, false)
+            && Slimefun.getProtectionManager().hasPermission(player, block.getLocation(), Interaction.INTERACT_BLOCK);
+    }
 
             @Override
             public int[] getSlotsAccessedByItemTransport(ItemTransportFlow flow) {
@@ -310,12 +312,12 @@ public abstract class NetworkDirectional extends NetworkObject {
             final Location location = targetMenu.getLocation();
             final SlimefunItem item = BlockStorage.check(location);
 
-            if (item != null
-                    && item.canUse(player, true)
-                    && Slimefun.getProtectionManager().hasPermission(player, blockMenu.getLocation(), Interaction.INTERACT_BLOCK)
-            ) {
-                targetMenu.open(player);
-            }
+    if (item != null
+        && item.canUse(player, true)
+        && Slimefun.getProtectionManager().hasPermission(player, blockMenu.getLocation(), Interaction.INTERACT_BLOCK)
+    ) {
+        targetMenu.open(player);
+    }
         }
     }
 
@@ -389,3 +391,13 @@ public abstract class NetworkDirectional extends NetworkObject {
         location.getWorld().spawnParticle(XParticle.DUST.get(), displayLocation, 0, pushVector.getX(), pushVector.getY(), pushVector.getZ(), getDustOptions());
     }
 }
+
+
+
+
+
+
+
+
+
+

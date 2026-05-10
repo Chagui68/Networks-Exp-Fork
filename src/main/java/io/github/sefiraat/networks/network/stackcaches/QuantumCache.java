@@ -106,3 +106,14 @@ public class QuantumCache extends ItemStackCache {
         itemMeta.setLore(lore);
     }
 }
+
+
+
+
+
+
+
+
+
+
+
